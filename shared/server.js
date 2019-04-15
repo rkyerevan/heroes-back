@@ -2,6 +2,7 @@ var server = require('mysql');
 var express = require('express');
 var app = express();
 
+
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -18,16 +19,19 @@ var connection = server.createPool({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'heroes'
+    database: 'heroes',
+    socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock'
+
 });
 
 
 //Get Method
 
 app.get('/users/foods', function (req, resp) {
+    console.log(resp);
     connection.getConnection(function (error, tempCon) {
         if (!!error) {
-            tempCon.release();
+            console.log(error)
             console.log("Error");
         } else {
             tempCon.query(" SELECT * FROM heroes ", function (error, rows, fields) {
@@ -77,5 +81,4 @@ app.post('/users/food', function (req, resp) {
     })
 })
 
-
-app.listen(3001)
+app.listen('3001');
